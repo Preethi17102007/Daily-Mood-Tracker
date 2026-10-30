@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moodly — Daily Mood Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="welcome-modal">
+      <button class="welcome-close" id="welcome-close" aria-label="Close welcome screen">×</button>
+      <div class="welcome-illustration" aria-hidden="true"><span class="illustration-sparkle sparkle-a">✦</span><span class="illustration-sparkle sparkle-b">✧</span><div class="illustration-plant">❀</div><div class="girl-hair"></div><div class="girl-face"><span class="girl-eye eye-left"></span><span class="girl-eye eye-right"></span><span class="girl-blush blush-left"></span><span class="girl-blush blush-right"></span><span class="girl-smile"></span></div><div class="girl-body"></div><span class="floating-heart heart-a">♥</span><span class="floating-heart heart-b">♡</span></div>
+      <span class="pill">♡ YOUR SOFT SPACE</span><h2 id="welcome-title">Welcome to Moodly</h2><p>A little space to pause, feel, and grow.<br>Every mood deserves kindness.</p><button class="primary-btn welcome-enter" id="welcome-enter">Let's begin <span>→</span></button><small>One feeling at a time ✿</small>
+    </div>
+  </div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" data-page="dashboard"><span class="brand-mark">♥</span><span>Moodly</span></a>
+      <div class="sidebar-label">YOUR SPACE</div>
+      <nav class="nav">
+        <button class="nav-link active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-link" data-page="add"><span>⊕</span> Add Mood</button>
+        <button class="nav-link" data-page="calendar"><span>▦</span> Calendar</button>
+        <button class="nav-link" data-page="analytics"><span>◔</span> Analytics</button>
+        <button class="nav-link" data-page="history"><span>◷</span> History</button>
+        <button class="nav-link" data-page="journal"><span>▤</span> Journal</button>
+        <button class="nav-link" data-page="profile"><span>♙</span> Profile</button>
+      </nav>
+      <div class="sidebar-note"><div class="note-flower">✿</div><p>Every feeling has a place.</p><span>Track · Reflect · Grow</span></div>
+      <button class="nav-link logout" id="clear-data"><span>↪</span> Reset demo data</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">YOUR PERSONAL MOOD JOURNAL</div><h1 id="page-title">Your little corner of calm <span>✦</span></h1></div>
+        <div class="top-actions"><button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">☼</button><div class="profile-menu-wrap"><button class="avatar" id="avatar-button" aria-label="Open profile menu" aria-expanded="false">P</button><div class="profile-dropdown" id="profile-dropdown"><div class="dropdown-heading"><strong id="dropdown-name">Preethi</strong><small>Your Moodly space</small></div><button data-page="profile">♙ Edit profile</button><button data-page="journal">▤ My journal</button><button id="dropdown-theme">☼ Switch theme</button></div></div></div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="welcome-banner">
+          <div class="welcome-copy"><span class="pill">✿ A LITTLE CHECK-IN</span><h2>Hello, Preethi <span>♡</span></h2><p>Take a breath. How are you feeling today?</p><button class="primary-btn" data-page="add">Record today's mood <span>→</span></button></div>
+          <div class="banner-art" aria-hidden="true"><div class="sun"></div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="flower f1">✿</div><div class="flower f2">✿</div><div class="sparkle s1">✧</div><div class="sparkle s2">✦</div></div>
+        </div>
+        <div class="section-heading"><div><h2>Today's mood</h2><p>There is no right or wrong way to feel.</p></div><button class="text-btn" data-page="add">+ Add entry</button></div>
+        <div class="mood-picker" id="dashboard-moods"></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon lilac">♡</div><div><span>Total entries</span><strong id="stat-total">0</strong><small>Your feelings, one day at a time</small></div></article>
+          <article class="stat-card"><div class="stat-icon pink">✿</div><div><span>Most recorded mood</span><strong id="stat-top">—</strong><small id="stat-top-note">Your pattern will appear here</small></div></article>
+          <article class="stat-card"><div class="stat-icon peach">☀</div><div><span>Days tracked</span><strong id="stat-days">0</strong><small>Every check-in counts</small></div></article>
+        </div>
+        <div class="section-heading"><div><h2>Recent entries</h2><p>A gentle look back at your days.</p></div><button class="text-btn" data-page="history">View all →</button></div>
+        <div class="card table-card"><div class="table-wrap"><table><thead><tr><th>DATE</th><th>MOOD</th><th>RATING</th><th>NOTE</th></tr></thead><tbody id="recent-entries"></tbody></table></div><div class="empty-state" id="recent-empty">Your story starts with one little check-in. ♡</div></div>
+      </section>
+
+      <section class="page" id="page-add">
+        <div class="page-intro"><span class="pill">✿ YOUR DAILY CHECK-IN</span><h2>How are you feeling?</h2><p>Pause for a moment and check in with yourself.</p></div>
+        <div class="form-layout"><form class="card mood-form" id="mood-form"><label for="entry-date">Date</label><input type="date" id="entry-date" required><label>Choose your mood</label><div class="mood-picker form-moods" id="form-moods"></div><input type="hidden" id="selected-mood" value="Happy"><label>How strong is this feeling?</label><div class="rating-picker" id="rating-picker"></div><input type="hidden" id="selected-rating" value="3"><label for="entry-note">A little note <span class="optional">(optional)</span></label><textarea id="entry-note" maxlength="500" placeholder="Write about your day, thoughts, or anything on your mind..."></textarea><div class="char-count"><span>Be kind to yourself. You are doing your best.</span><span id="char-count">0 / 500</span></div><button class="primary-btn full-btn" type="submit">Save my mood <span>♡</span></button><p class="form-message" id="form-message" role="status"></p></form><aside class="quote-card"><div class="quote-sparkle">✧</div><div class="quote-illustration">☁<span>♡</span></div><h3>Your feelings are valid.</h3><p>You don't have to figure everything out today. Just noticing how you feel is a meaningful first step.</p><span class="quote-flower">✿</span></aside></div>
+      </section>
+
+      <section class="page" id="page-calendar">
+        <div class="page-intro"><span class="pill">✿ YOUR MONTH IN FEELINGS</span><h2>Mood calendar</h2><p>Every day tells a little part of your story.</p></div>
+        <div class="card calendar-card"><div class="calendar-head"><button class="icon-btn" id="prev-month">←</button><h3 id="calendar-month"></h3><button class="icon-btn" id="next-month">→</button></div><div class="calendar-grid weekday-row"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="calendar-grid" id="calendar-grid"></div><div class="legend" id="calendar-legend"></div></div>
+      </section>
+
+      <section class="page" id="page-analytics">
+        <div class="page-intro"><span class="pill">✿ NOTICE YOUR PATTERNS</span><h2>Your mood insights</h2><p>Gentle summaries based on the entries you choose to record.</p></div>
+        <div class="analytics-grid"><article class="card chart-card"><div class="card-title"><h3>Mood distribution</h3><span>All entries</span></div><div class="chart-wrap"><canvas id="distribution-chart"></canvas></div></article><article class="card chart-card"><div class="card-title"><h3>Recent mood ratings</h3><span>Last 7 entries</span></div><div class="chart-wrap"><canvas id="trend-chart"></canvas></div></article><article class="card insight-card"><div class="insight-icon">✧</div><h3>A little insight</h3><p id="insight-text">As you add entries, your personal mood summary will appear here.</p><small>These summaries describe your saved entries; they are not medical advice or a diagnosis.</small></article></div>
+      </section>
+
+      <section class="page" id="page-history">
+        <div class="page-intro"><span class="pill">✿ YOUR PERSONAL TIMELINE</span><h2>Mood history</h2><p>Look back with kindness. You were doing the best you could.</p></div>
+        <div class="card history-card"><div class="history-tools"><input type="search" id="history-search" placeholder="Search a mood or note..."><select id="history-filter"><option value="all">All moods</option></select></div><div class="table-wrap"><table><thead><tr><th>DATE</th><th>MOOD</th><th>RATING</th><th>NOTE</th><th>ACTION</th></tr></thead><tbody id="history-entries"></tbody></table></div><div class="empty-state" id="history-empty">No entries yet. Add your first mood to begin. ♡</div></div>
+      </section>
+
+      <section class="page" id="page-journal">
+        <div class="page-intro"><span class="pill">✿ A SPACE JUST FOR YOU</span><h2>Reflection journal</h2><p>You can write a little or a lot. This space is yours.</p></div>
+        <div class="journal-layout"><div class="card prompt-card"><div class="prompt-icon">☀</div><span class="eyebrow">TODAY'S GENTLE PROMPT</span><h3>What is one small thing that made today better?</h3><p>It can be a song, a kind word, a good meal, or a quiet moment.</p><button class="secondary-btn" id="use-prompt">Use this prompt</button></div><form class="card journal-form" id="journal-form"><label for="journal-date">Date</label><input type="date" id="journal-date" required><label for="journal-text">Your reflection</label><textarea id="journal-text" maxlength="1500" placeholder="Dear me, today I..."></textarea><div class="char-count"><span>Your journal stays in this browser in this demo.</span><span id="journal-count">0 / 1500</span></div><button class="primary-btn" type="submit">Save reflection ♡</button><p class="form-message" id="journal-message" role="status"></p></form></div><div class="section-heading"><div><h2>Past reflections</h2><p>Little memories worth keeping.</p></div></div><div class="journal-list" id="journal-list"></div>
+      </section>
+
+      <section class="page" id="page-profile">
+        <div class="page-intro"><span class="pill">✿ YOUR LITTLE SPACE</span><h2>Profile & preferences</h2><p>Make this space feel like yours.</p></div>
+        <div class="card profile-card"><div class="profile-avatar">P</div><div class="profile-fields"><label for="profile-name">Your name</label><input id="profile-name" value="Preethi" maxlength="40"><label for="profile-tagline">A little reminder</label><input id="profile-tagline" value="I am allowed to grow at my own pace." maxlength="120"><button class="primary-btn" id="save-profile">Save preferences ♡</button><p class="form-message" id="profile-message" role="status"></p></div></div><div class="privacy-note"><span>♡</span><div><strong>A gentle privacy note</strong><p>This starter version saves data in your current browser using local storage. It does not yet have a secure account system or cloud database. Don't use it for sensitive private information until a backend and authentication are added.</p></div></div>
+      </section>
+
+      <footer class="footer">Made with care <span>♥</span> Your feelings matter, every day.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
